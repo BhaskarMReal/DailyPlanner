@@ -10,7 +10,6 @@ venv/
 .env
 
 # Django static/media
-/static/
 /media/
 
 # VSCode or IDE settings
