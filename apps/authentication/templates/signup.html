@@ -10,6 +10,24 @@
     <link rel="icon" href="{% static 'icon/authentication.png' %}" type="image/x-icon">
   </head>
   <body>
+    <form method="POST" action="">
+      {% csrf_token %}
+      <label>Username:</label>
+      {{ form.username }} <br>
+
+      <label>First name:</label>
+      {{ form.first_name }} <br>
+
+      <label>Email:</label>
+      {{ form.email }} <br>
+
+      <label>Password:</label>
+      {{ form.password1 }} <br>
+
+      <label>Confirm password:</label>
+      {{ form.password2 }} <br>
+      <button type="submit">Submit</button>
+    </form>
     <footer>Icons by <a>icons8.com</a></footer>
   </body>
 </html>
