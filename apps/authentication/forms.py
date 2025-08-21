@@ -15,3 +15,7 @@ class RegistrationForm(UserCreationForm):
             'email':None,
         }
        
+class LoginForm(forms.Form):
+    email = forms.EmailField(label="Enter email", widget=forms.EmailInput)
+    password = forms.CharField(label="Enter password", widget=forms.PasswordInput)
+
