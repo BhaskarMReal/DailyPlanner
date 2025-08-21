@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.contrib.auth.models import User
+from .models import CustomUser
 
 class UserAdmin(admin.ModelAdmin):
     list_display = ('username', 'email', 'first_name', 'last_name', 'password')
@@ -19,5 +19,5 @@ class UserAdmin(admin.ModelAdmin):
     def password(self, obj):
         return obj.password
     
-admin.site.unregister(User)
-admin.site.register(User, UserAdmin)
+
+admin.site.register(CustomUser, UserAdmin)
