@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Daily Tasks</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/daily.css' %}">
+    <link rel="icon" href="{% static 'icon/planner.png' %}" type="image/x-icon">
+  </head>
+  <body>
+    <form id='task-form' onsubmit="return false">
+        {% csrf_token %}
+        <label>Task</label>
+        {{ form.task }} <br>
+        <label>Date</label>
+        {{ form.date }} <br>
+        <label>Important?</label>
+        {{ form.important }} <br>
+        <label>Completed?</label>
+        {{ form.completed }} <br>
+        <button id="daily-submit" onclick="addTask(); resetFields()">Add</button>
+    </form>
+    
+     <footer>Planner icon by <a>icons8.com</a></footer>
+         <script src="{% static 'js/taskRetriever.js' %}"></script>
+  </body>
+
+</html>
