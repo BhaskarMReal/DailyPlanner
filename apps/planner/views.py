@@ -4,6 +4,7 @@ from .forms import TaskForm
 from django.http import JsonResponse
 import json
 from .serializers import TaskSerializer
+from django.contrib import sessions
 
 def daily(request):
     form = TaskForm()
@@ -41,7 +42,29 @@ def get_task(request):
         return JsonResponse({'tasks': tasks})
 
 def edit_task(request):
-    return render(request, 'daily.html')
+    if request.method == "POST":
+        data = json.loads(request.body)
+        taskId = data.get("taskid")
+        edit_current_task = Tasks.objects.filter(taskid=taskId, user=request.user).first()
+        return JsonResponse({
+            "task": edit_current_task.task,
+            "date": edit_current_task.date,
+            "important": edit_current_task.important,
+            "completed": edit_current_task.completed
+        })
+     
+def save_edit_task(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        print(data)
+        taskId = data.get("taskid")
+        task = data.get("task")
+        date = data.get("date")
+        important = data.get("important")
+        completed = data.get("completed")
+        print("Retrieved Object: ", Tasks.objects.filter(taskid=taskId))
+        Tasks.objects.filter(taskid=taskId).update(task=task, date=date, important=important, completed=completed)
+        return JsonResponse({'status':'success', 'message': 'task updated'})
 
 def delete_task(request):
     if request.method == "POST":
