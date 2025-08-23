@@ -7,8 +7,8 @@ from .serializers import TaskSerializer
 
 def daily(request):
     form = TaskForm()
-    tasks = Tasks.objects.all().order_by('-date')
-    return render(request, 'daily.html', {'form':form, 'tasks': tasks})
+    tasks = list(Tasks.objects.all().filter(user=request.user).order_by('date').values())
+    return render(request, "daily.html", {'form':form, 'tasks':tasks})
 
 def add_task(request):
     try:
@@ -19,16 +19,26 @@ def add_task(request):
         important = data.get("important")
         completed = data.get("completed")
         print(f"Received task: {task}, Date: {date}, Important: {important}, Completed: {completed}")
-        Tasks.objects.create(user=user, task=task, date=date, completed=completed, important=important)
+        new_task = Tasks.objects.create(user=user, task=task, date=date, completed=completed, important=important)
 
-        return JsonResponse({"status": "success", "message": "Task received", "task": task})
+        return JsonResponse({
+            "taskid": new_task.taskid,
+            "task": task,
+            "date": str(date),
+            "important": important,
+            "completed": completed,
+        })
 
 
     except Exception as e:
-        print("Error in adding task", e)
+        print("Error in adding task: ", e)
         return JsonResponse({"status": "error", "message": str(e)}, status=400)
 
-    
+
+def get_task(request):
+    if request.method == "GET":
+        tasks = list(Tasks.objects.filter(user=request.user).values('taskid', 'task', 'date', 'important', 'completed').order_by('date'))
+        return JsonResponse({'tasks': tasks})
 
 def edit_task(request, taskid):
     return render(request, 'daily.html')

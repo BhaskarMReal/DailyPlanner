@@ -3,6 +3,7 @@ function getCSRFToken() {
         return document.querySelector('[name=csrfmiddlewaretoken]').value;
 }
 
+
 function addTask() {
     let taskInfo = document.getElementById("task").value;
     let date = document.getElementById("date").value;
@@ -25,7 +26,9 @@ function addTask() {
     })
     .then(response => response.json())
     .then(data => {
-        console.log("Site responded:", data)
+        console.log("Site responded:", data);
+        loadTasks();
+        resetFields();
     })
     .catch(error => {
         console.error("Error:", error);
@@ -38,3 +41,39 @@ function resetFields() {
     document.getElementById("important").checked = false;
     document.getElementById("completed").checked = false;
 }
+
+function loadTasks() {
+    fetch("/daily/get_task/", {
+        method: "GET",
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+        }
+    })
+    .then(res => res.json())
+    .then(data => {
+        const list = document.getElementById('task-list');
+        list.innerHTML = ""
+        if (data.tasks.length == 0) {
+            list.innerHTML = "<p>No tasks created yet.</p>";
+            return;
+        }
+
+        data.tasks.forEach(task => {
+            const div = document.createElement('div');
+            div.className = "task-bubble";
+            div.setAttribute("data-id", task.taskid);
+            div.innerHTML = `
+                    ${task.taskid} - ${task.task} (${task.date}) - Important: ${task.important} - Completed: ${task.completed} <button class="delete-button"><img src="/static/icon/trash.png"></button>
+
+            `;
+            div.style.opacity = 0;
+            list.appendChild(div);
+            setTimeout(() => div.style.opacity = 1, 200);
+        });
+    })
+    .catch(error => console.error("Error Loading Tasks:", error));
+}
+
+window.onload = function () {
+    loadTasks();
+};

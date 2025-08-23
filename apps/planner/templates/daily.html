@@ -10,20 +10,23 @@
     <link rel="icon" href="{% static 'icon/planner.png' %}" type="image/x-icon">
   </head>
   <body>
+
+    <div id="task-list"></div>
     <form id='task-form' onsubmit="return false">
-        {% csrf_token %}
-        <label>Task</label>
-        {{ form.task }} <br>
-        <label>Date</label>
-        {{ form.date }} <br>
-        <label>Important?</label>
-        {{ form.important }} <br>
-        <label>Completed?</label>
-        {{ form.completed }} <br>
-        <button id="daily-submit" onclick="addTask(); resetFields()">Add</button>
-    </form>
+                {% csrf_token %}
+                <label>Task</label>
+                {{ form.task }} <br>
+                <label>Date</label>
+                {{ form.date }} <br>
+                <label>Important?</label>
+                {{ form.important }} <br>
+                <label>Completed?</label>
+                {{ form.completed }} <br>
+                <button id="daily-submit" onclick="addTask(); resetFields()">Add</button>
+                </form>
     
-     <footer>Planner icon by <a>icons8.com</a></footer>
+
+     <footer>Planner and Trash icon by <a>icons8.com</a></footer>
          <script src="{% static 'js/taskRetriever.js' %}"></script>
   </body>
 
