@@ -63,7 +63,7 @@ function loadTasks() {
             div.className = "task-bubble";
             div.setAttribute("data-id", task.taskid);
             div.innerHTML = `
-                    ${task.taskid} - ${task.task} (${task.date}) - Important: ${task.important} - Completed: ${task.completed} <button class="delete-button"><img src="/static/icon/trash.png"></button>
+                    ${task.taskid} - ${task.task} (${task.date}) - Important: ${task.important} - Completed: ${task.completed} <button class="delete-button" onclick='deleteTask(this);'><img src="/static/icon/trash.png"></button>
 
             `;
             div.style.opacity = 0;
@@ -77,3 +77,30 @@ function loadTasks() {
 window.onload = function () {
     loadTasks();
 };
+
+function deleteTask(elem) {
+   const taskBubble = elem.closest('.task-bubble');
+   const taskId = taskBubble.getAttribute('data-id');
+   console.log('Identified taskid:', taskId);
+
+   fetch("/daily/delete_task/", {
+    method: "POST",
+    headers: {
+        'X-CSRFToken': getCSRFToken(),
+        "X-Requested-With": 'XMLHttpRequest'
+    },
+    body: JSON.stringify({
+        'taskid': taskId
+    })
+   })
+   .then(res => res.json())
+   .then(data  => {
+    console.log("Deleted TaskID", taskId);
+    console.log(data);
+   });
+
+   const taskRemove = document.querySelector(`.task-bubble[data-id='${taskId}']`);
+   if (taskRemove) {
+    taskRemove.remove();
+   }
+}

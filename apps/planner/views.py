@@ -40,13 +40,22 @@ def get_task(request):
         tasks = list(Tasks.objects.filter(user=request.user).values('taskid', 'task', 'date', 'important', 'completed').order_by('date'))
         return JsonResponse({'tasks': tasks})
 
-def edit_task(request, taskid):
+def edit_task(request):
     return render(request, 'daily.html')
 
-def delete_task(request, taskid):
-    return render(request, 'daily.html')
+def delete_task(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        taskId= data.get('taskid')
+        delete_obj = Tasks.objects.all().filter(taskid=taskId, user=request.user)
+        delete_obj.delete()
+        return JsonResponse({'status':'success', 'message': 'task deleted'})
 
-def toggle_complete(request, taskid):
+
+
+
+
+def toggle_complete(request):
     return render(request, 'daily.html')
 
 def toggle_important(request, taskid):
