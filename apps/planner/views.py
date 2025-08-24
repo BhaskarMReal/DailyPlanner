@@ -5,6 +5,7 @@ from django.http import JsonResponse
 import json
 from .serializers import TaskSerializer
 from django.contrib import sessions
+from django.utils import timezone
 
 def daily(request):
     form = TaskForm()
@@ -37,8 +38,14 @@ def add_task(request):
 
 
 def get_task(request):
-    if request.method == "GET":
-        tasks = list(Tasks.objects.filter(user=request.user).values('taskid', 'task', 'date', 'important', 'completed').order_by('date'))
+    if request.method == "POST":
+        data = json.loads(request.body)
+        filter = data.get("current_url")
+        if filter == "daily":
+            date_today = timezone.localdate()
+            tasks = list(Tasks.objects.filter(user=request.user, date=date_today).values('taskid', 'task', 'date', 'important', 'completed').order_by('date'))
+        elif (filter == "all"):
+            tasks = list(Tasks.objects.filter(user=request.user).values('taskid', 'task', 'date', 'important', 'completed').order_by('date'))
         return JsonResponse({'tasks': tasks})
 
 def edit_task(request):

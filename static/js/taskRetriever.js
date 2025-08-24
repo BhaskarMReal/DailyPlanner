@@ -1,4 +1,8 @@
 
+function getCurrentURL() {
+    return window.location.pathname.replaceAll("/", "");
+}
+
 function getCSRFToken() {
         return document.querySelector('[name=csrfmiddlewaretoken]').value;
 }
@@ -14,6 +18,7 @@ function addTask() {
     fetch(url, {
         method: "POST",
         headers: {
+            'Content-Type': 'application/json',
             'X-CSRFToken': getCSRFToken(),
             'X-Requested-With': 'XMLHttpRequest',
         },
@@ -44,10 +49,15 @@ function resetFields() {
 
 function loadTasks() {
     fetch("/daily/get_task/", {
-        method: "GET",
+        method: "POST",
         headers: {
+            'X-CSRFToken': getCSRFToken(),
+            'Content-Type': 'application/json',
             'X-Requested-With': 'XMLHttpRequest',
-        }
+        },
+        body: JSON.stringify ({
+            'current_url': getCurrentURL()
+        })
     })
     .then(res => res.json())
     .then(data => {
@@ -63,7 +73,7 @@ function loadTasks() {
             div.className = "task-bubble";
             div.setAttribute("data-id", task.taskid);
             div.innerHTML = `
-                    ${task.taskid} - ${task.task} (${task.date}) - Important: ${task.important} - Completed: ${task.completed} <button class="delete-button" onclick='deleteTask(this);'><img src="/static/icon/trash.png"></button> <button class="edit-button" onclick='editTask(this);'><img src="/static/icon/edit.png"></button>
+                    ${task.task} (${task.date}) - Important: ${task.important} - Completed: ${task.completed} <button class="delete-button" onclick='deleteTask(this);'><img src="/static/icon/trash.png"></button> <button class="edit-button" onclick='editTask(this);'><img src="/static/icon/edit.png"></button>
 
             `;
             div.style.opacity = 0;
@@ -75,9 +85,10 @@ function loadTasks() {
 }
 
 window.onload = function () {
-    loadTasks();
+    
     document.getElementById('task-form').style.display="block";
     document.getElementById('edit-form').style.display="none";
+    loadTasks();
 };
 
 function deleteTask(elem) {
@@ -88,6 +99,7 @@ function deleteTask(elem) {
    fetch("/daily/delete_task/", {
     method: "POST",
     headers: {
+        'Content-Type': 'application/json',
         'X-CSRFToken': getCSRFToken(),
         "X-Requested-With": 'XMLHttpRequest'
     },
@@ -99,12 +111,13 @@ function deleteTask(elem) {
    .then(data  => {
     console.log("Deleted TaskID", taskId);
     console.log(data);
+    const taskRemove = document.querySelector(`.task-bubble[data-id='${taskId}']`);
+    if (taskRemove) {
+        taskRemove.remove();
+    }
    });
 
-   const taskRemove = document.querySelector(`.task-bubble[data-id='${taskId}']`);
-   if (taskRemove) {
-    taskRemove.remove();
-   }
+   
 }
 
 
@@ -119,6 +132,7 @@ function editTask(elem) {
     fetch("/daily/edit_task/", {
         method: "POST", 
         headers: {
+            'Content-Type': 'application/json',
             'X-Requested-With': 'XMLHttpRequest',
             'X-CSRFToken': getCSRFToken(),
         },
@@ -132,17 +146,16 @@ function editTask(elem) {
         document.getElementById('task-form').style.display="none";
         document.getElementById('edit-form').style.display="block";
         const { task, date, important, completed } = data;
-        console.log(task)
-        console.log(date)
-        console.log(important)
-        console.log(completed)
-        const editForm = document.getElementById('edit-form');
         editForm.querySelector(`input[name="task"]`).value = task;
         editForm.querySelector(`input[name="date"]`).value = date;
         editForm.querySelector(`input[name="important"]`).checked = important;
         editForm.querySelector(`input[name="completed"]`).checked = completed;
         
     })
+    .catch(error => {
+    console.error("Error saving edit:", error);
+    });
+
 }
 
 function editSubmit() {
@@ -156,6 +169,7 @@ function editSubmit() {
     fetch("/daily/edit_submission/", {
         method: "POST",
         headers: {
+            'Content-Type': 'application/json',
             'X-CSRFToken': getCSRFToken(),
             'X-Requested-With': 'XMLHttpRequest',
         },
@@ -176,8 +190,4 @@ function editSubmit() {
         document.getElementById('task-form').style.display = "block";
     })
 
-
-
-    loadTasks();
-    resetFields();
 }
