@@ -10,7 +10,12 @@
     <link rel="icon" href="{% static 'icon/planner.png' %}" type="image/x-icon">
   </head>
   <body>
-
+    <ul>
+        <li><a href="../daily/">My Day</a></li>
+        <li><a href="../all/">Scheduled</a></li>
+        <li><a href="../important/">Important</a></li>
+        <li><a href="../completed/">Completed</a></li>
+    </ul>
     <div id="task-list"></div>
     <form id='task-form' onsubmit="return false">
                 {% csrf_token %}

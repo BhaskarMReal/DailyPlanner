@@ -89,7 +89,7 @@ function loadTasks() {
 
 
             div.innerHTML = `
-                    ${task.task} (${task.date}) - Important: ${important_html} - Completed: ${completed_html} <button class="delete-button" onclick='deleteTask(this);'><img src="/static/icon/trash.png"></button> <button class="edit-button" onclick='editTask(this);'><img src="/static/icon/edit.png"></button>
+                    <strong>${task.task}</strong> (${task.date}) - <div class="status">Important: ${important_html} - Completed: ${completed_html}</div> <div class="actions"><button class="delete-button" onclick='deleteTask(this);'><img src="/static/icon/trash.png"></button> <button class="edit-button" onclick='editTask(this);'><img src="/static/icon/edit.png"></button></div>
 
             `;
             div.style.opacity = 0;
