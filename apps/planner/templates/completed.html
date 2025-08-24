@@ -10,6 +10,7 @@
     <link rel="icon" href="{% static 'icon/planner.png' %}" type="image/x-icon">
   </head>
   <body>
+    <div class="page">
     <ul>
         <li><a href="../daily/">My Day</a></li>
         <li><a href="../all/">Scheduled</a></li>
@@ -27,7 +28,7 @@
                 {{ form.important }} <br>
                 <label>Completed?</label>
                 {{ form.completed }} <br>
-                <button class="submit-button" id="daily-submit" onclick="editSubmit(); resetFields()">Add</button>
+                <button id="daily-submit" onclick="addTask(); resetFields()">Add</button>
                 </form>
     
                 <form id='edit-form' onsubmit="return false">
@@ -40,12 +41,13 @@
                 {{ form.important }} <br>
                 <label>Completed?</label>
                 {{ form.completed }} <br>
-                <button class="submit-button" id="daily-submit" onclick="editSubmit(); resetFields()">Save</button>
+                <button id="daily-submit" onclick="editSubmit(); resetFields()">Save</button>
                 </form>
 
      <footer>Planner, Trash, Tick and Cross icon by <a>icons8.com</a><br>
-    <a href="https://www.flaticon.com/free-icons/register" title="register icons">Register icons created by Pixel perfect - Flaticon</a></footer>
          <script src="{% static 'js/taskRetriever.js' %}"></script>
+        </footer>
+    </div>
   </body>
 
 </html>

@@ -1,4 +1,5 @@
 body {
+    height: 100%;
     margin: 0;
 }
 
@@ -26,6 +27,21 @@ li a:hover {
     background-color: rgb(18, 153, 59);
     border: 1pt;
     border-color: black;
+}
+
+footer {
+    margin-top: auto;
+    padding: 12px;
+    background-color: rgb(22, 158, 56);
+    text-align: center;
+    color: white;
+    font-weight: bold;
+}
+
+.page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 .task-bubble {
