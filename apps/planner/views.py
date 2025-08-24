@@ -58,11 +58,11 @@ def get_task(request):
         filter = data.get("current_url")
         if filter == "daily":
             date_today = timezone.localdate()
-            tasks = list(Tasks.objects.filter(user=request.user, date=date_today).values('taskid', 'task', 'date', 'important', 'completed').order_by('date'))
+            tasks = list(Tasks.objects.filter(user=request.user, date=date_today,completed=False).values('taskid', 'task', 'date', 'important', 'completed').order_by('date'))
         elif (filter == "all"):
-            tasks = list(Tasks.objects.filter(user=request.user).values('taskid', 'task', 'date', 'important', 'completed').order_by('date'))
+            tasks = list(Tasks.objects.filter(user=request.user, completed=False).values('taskid', 'task', 'date', 'important', 'completed').order_by('date'))
         elif (filter == "important"):
-            tasks = list(Tasks.objects.filter(user=request.user, important=True).values('taskid', 'task', 'date', 'important', 'completed').order_by('date'))
+            tasks = list(Tasks.objects.filter(user=request.user, important=True, completed=False).values('taskid', 'task', 'date', 'important', 'completed').order_by('date'))
         elif (filter == "completed"):
             tasks = list(Tasks.objects.filter(user=request.user, completed=True).values('taskid', 'task', 'date', 'important', 'completed').order_by('date'))
         return JsonResponse({'tasks': tasks})

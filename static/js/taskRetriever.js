@@ -63,7 +63,7 @@ function loadTasks() {
     .then(data => {
         const list = document.getElementById('task-list');
         list.innerHTML = ""
-        if (data.tasks.length == 0) {
+        if (data.tasks.length === 0) {
             list.innerHTML = "<p>No tasks created yet.</p>";
             return;
         }
@@ -72,8 +72,24 @@ function loadTasks() {
             const div = document.createElement('div');
             div.className = "task-bubble";
             div.setAttribute("data-id", task.taskid);
+
+            var important_html;
+            if (task.important === true) {
+                important_html = `<img src="/static/icon/tick.png">`;
+            } else {
+                important_html = `<img src="/static/icon/cross.png">`;
+            }
+
+            var completed_html;
+            if (task.completed === true) {
+                completed_html = `<img src="/static/icon/tick.png"></img>`;
+            } else {
+                completed_html = `<img src="/static/icon/cross.png"></img>`;
+            }
+
+
             div.innerHTML = `
-                    ${task.task} (${task.date}) - Important: ${task.important} - Completed: ${task.completed} <button class="delete-button" onclick='deleteTask(this);'><img src="/static/icon/trash.png"></button> <button class="edit-button" onclick='editTask(this);'><img src="/static/icon/edit.png"></button>
+                    ${task.task} (${task.date}) - Important: ${important_html} - Completed: ${completed_html} <button class="delete-button" onclick='deleteTask(this);'><img src="/static/icon/trash.png"></button> <button class="edit-button" onclick='editTask(this);'><img src="/static/icon/edit.png"></button>
 
             `;
             div.style.opacity = 0;
