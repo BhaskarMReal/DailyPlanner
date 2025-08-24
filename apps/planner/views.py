@@ -12,6 +12,21 @@ def daily(request):
     tasks = list(Tasks.objects.all().filter(user=request.user).order_by('date').values())
     return render(request, "daily.html", {'form':form, 'tasks':tasks})
 
+def all(request):
+    form = TaskForm()
+    tasks = list(Tasks.objects.all().filter(user=request.user).order_by('date').values())
+    return render(request, "all.html", {'form':form, 'tasks':tasks})
+
+def important(request):
+    form = TaskForm()
+    tasks = list(Tasks.objects.all().filter(user=request.user).order_by('date').values())
+    return render(request, "important.html", {'form':form, 'tasks':tasks})
+
+def completed(request):
+    form = TaskForm()
+    tasks = list(Tasks.objects.all().filter(user=request.user).order_by('date').values())
+    return render(request, "completed.html", {'form':form, 'tasks':tasks})
+
 def add_task(request):
     try:
         user = request.user
@@ -46,6 +61,10 @@ def get_task(request):
             tasks = list(Tasks.objects.filter(user=request.user, date=date_today).values('taskid', 'task', 'date', 'important', 'completed').order_by('date'))
         elif (filter == "all"):
             tasks = list(Tasks.objects.filter(user=request.user).values('taskid', 'task', 'date', 'important', 'completed').order_by('date'))
+        elif (filter == "important"):
+            tasks = list(Tasks.objects.filter(user=request.user, important=True).values('taskid', 'task', 'date', 'important', 'completed').order_by('date'))
+        elif (filter == "completed"):
+            tasks = list(Tasks.objects.filter(user=request.user, completed=True).values('taskid', 'task', 'date', 'important', 'completed').order_by('date'))
         return JsonResponse({'tasks': tasks})
 
 def edit_task(request):
