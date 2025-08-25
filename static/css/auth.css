@@ -1,0 +1,84 @@
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 600px;
+    margin: auto;
+    padding: 16px;
+    background-color: rgb(54, 214, 94);
+    border-radius: 12px;
+
+}
+
+form label {
+    font-weight: bold;
+    margin-top: 12px;
+    margin-bottom: 4px;
+    align-self: flex-start;
+}
+
+form input[type="text"],
+form input[type="date"],
+form input[type="checkbox"],
+form input[type="password"],
+form input[type="email"] {
+    width: 60%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+
+
+form button {
+    margin-top: 16px;
+    padding: 8px 16px;
+    background-color: rgb(51, 206, 51);
+    color: white;
+ 
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+}
+
+.submit-button {
+    display: flex;
+    justify-content: center;
+    margin-top: 16px;
+    border-color: black;
+    margin: auto;
+}
+
+footer {
+    margin-top: auto;
+    padding: 12px;
+    background-color: rgb(22, 158, 56);
+    text-align: center;
+    color: white;
+    font-weight: bold;
+}
+
+.page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.sign-in {
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.sign-up {
+    font-weight: bold;
+    text-decoration: none;
+}

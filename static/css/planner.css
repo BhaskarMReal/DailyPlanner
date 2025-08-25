@@ -124,7 +124,7 @@ form button {
     padding: 8px 16px;
     background-color: rgb(51, 206, 51);
     color: white;
-    border: none;
+ 
     border-radius: 6px;
     cursor: pointer;
     font-weight: bold;
@@ -134,7 +134,9 @@ form button {
 .submit-button {
     display: flex;
     justify-content: center;
-    margin-top: 16px
+    margin-top: 16px;
+    border-color: black;
+    margin: auto;
 }
 
 #task-list {

@@ -10,6 +10,7 @@
     <link rel="icon" href="{% static 'icon/authentication.png' %}" type="image/x-icon">
   </head>
   <body>
+    <div class="page">
     <form method="POST" action="">
       {% csrf_token %}
       <label>Email:</label>
@@ -18,9 +19,11 @@
       <label>Password:</label>
       {{ form.password }} <br>
 
-      <button type="submit">Submit</button>
+      <button type="submit-button">Submit</button>
+      <span class="sign-up">Not got an account?</span> <a href="../signup/" class="sign-in">Register</a>
     </form>
-    <span class="sign-up">Not got an account?</span> <a href="./signup/">Register</a>
+    
      <footer>Icons by <a>icons8.com</a></footer>
+     </div>
   </body>
 </html>
